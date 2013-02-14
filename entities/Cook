@@ -1,0 +1,534 @@
+CreateAllMV(){
+	int index;
+	char ordertakerstatusMV;
+	char baggedMV;
+	char dineTypeMV;
+	char deliveredMV;
+	char baggedMV;
+	char myOTMV;
+	char orderMV;
+	char sixBurgerMV;
+	char threeBurgerMV;
+	char vegBurgerMV;
+	char friesMV;
+	char sodaMV;
+	char tablesMV;
+	char tableNoMV;
+	char tokenNoMV;
+	
+	
+	/* nextOrderTakerIndex */
+	nextOrderTakerIndexMVi = CreateMV("nextOrderTakerIndex", 19);
+	/* custServed */
+	custServedMVi = CreateMV("custServed", 10);
+	/* nextWaiterIndex */
+	nextWaiterIndexMVi = CreateMV("nextWaiterIndex", 15);
+	/* nextCookIndex */
+	nextCookIndexMVi = CreateMV("nextCookIndex", 13);
+	/* foodToBag */
+	foodToBagMVi = CreateMV("foodToBag", 9);
+	/* nextCustomerIndex */
+	nextCustomerIndexMVi = CreateMV("nextCustomerIndex", 17);
+	/* custLineLength */
+	custLineLengthMVi = CreateMV("custLineLength", 14);
+	/* managerLineLength */
+	managerLineLengthMVi = CreateMV("managerLineLength", 17);
+	/* tableAvailable */
+	tableAvailableMVi = CreateMV("tableAvailable", 14);
+	/* nextTokenNumber */
+	nextTokenNumberMVi = CreateMV("nextTokenNumber", 15);
+	/* foodToBag */
+	foodToBagMVi = CreateMV("foodToBag", 9);
+	/* moneyAtRestaurant */
+	moneyAtRestaurantMVi = CreateMV("moneyAtRestaurant", 17);
+	/* whatToCookFirst */
+	whatToCookFirstMVi = CreateMV("whatToCookFirst", 15);	
+	/* whatToCookNext */
+	whatToCookNextMVi = CreateMV("whatToCookNext", 14);
+	/* foodReadyData.sixBurger */
+	readySixBurgerMVi = CreateMV("readySixBurger", 14);
+	/* foodReadyData.threeeBurger */
+	readyThreeBurgerMVi = CreateMV("readyThreeBurger", 16);
+	/* foodReadyData.vegBurger */
+	readyVegBurgerMVi = CreateMV("readySixVegBurger", 17);
+	/* foodReadyData.fries */
+	readyFriesMVi = CreateMV("readyFries", 10);
+	/* cooksOnBreakCount */
+	cooksOnBreakCountMVi = CreateMV("cooksOnBreakCount", 17);
+	/* inventory */
+	inventoryMVi = CreateMV("inventory", 9);
+	
+	/* foodToBeCookedData.sixBurger */
+	toBeCookedSixburgerMVi = CreateMV("toBecookedSixBurger", 19);
+	/* foodToBeCookedData.threeBurger */
+	toBeCookedThreeburgerMVi = CreateMV("toBecookedThreeBurger", 21);
+	/* foodToBeCookedData.vegBurger */
+	toBeCookedVegburgerMVi = CreateMV("toBecookedVegBurger", 19);
+	/* foodToBeCookedData.fries */
+	toBeCookedFriesMVi = CreateMV("toBecookedFriesBurger", 21);
+	
+	/* stopSixBurger */
+	stopSixBurgerMVi = Create("stopSixBurger",13);
+	/* stopThreeBurger */
+	stopThreeBurgerMVi = Create("stopThreeBurger",15);
+	/* stopVegBurger */
+	stopVegBurgerMVi = Create("stopVegBurger",13);
+	/* stopFries */
+	stopFriesMVi = Create("stopFries",9);
+
+	/* workingCooks[type] */
+	for(index = 1; index <= 4; index+++){
+		switch (index) {
+			/* workingCooks[sixBurger] */
+			case SIXBURGER:
+			workingCooksMVi[index] = Create("workingCooks[sixBurger]", 23);
+			break;
+			/* workingCooks[threeBurger] */
+			case THREEBURGER:
+			workingCooksMVi[index] = Create("workingCooks[threeBurger]", 25);
+			break;		
+			/* workingCooks[vegBurger] */
+			case VEGBURGER:
+			workingCooksMVi[index] = Create("workingCooks[vegBurger]", 23);
+			break;
+			/* workingCooks[fries] */
+			case FRIES:
+			workingCooksMVi[index] = Create("workingCooks[fries]", 19);
+			break;
+		}
+	}
+	
+	for(index = 0; index <= OT_COUNT; index++){
+		/* orderTakerStatus[index] */
+		sprintf(ordertakerstatusMV,"ordertakerstatus[%d]", index);
+		ordertakerstatusMVi[index] = CreateMV(ordertakerstatusMV, 19);
+	}
+	for(index = 0; index <= CUST_COUNT; index++){
+		/* custData[index].bagged */
+		sprintf(baggedMV, "baggedincustDB[%d]", index);
+		baggedincustDBMVi[index] = CreateMV(baggedMV, 18);
+		/* custData[index].dineType */
+		sprintf(dineTypeMV, "dineTypeincustDB[%d]", index);
+		dineTypeincustDBMVi[index] = CreateMV(dineTypeMV, 20);
+		/* custData[index].dilivered */
+		sprintf(deliveredMV, "deliveredincustDB[%d]", index);
+		deliveredincustDBMVi[index] = CreateMV(deliveredMV, 21);
+		/* baggedlist[index] */
+		sprintf(baggedMV, "baggedlist[%d]" index);
+		baggedListMVi[index] = CreateMV(baggedMV, 14);
+		/* custData[index].myOT */
+		sprintf(myOTMV, "myOTincustDB[%d]", index);
+		myOTMVi[index] = CreateMV(myOTMV, 16);
+		/* custData[index].ordered */
+		sprintf(orderedMV, "orderedincustDB[%d]", index);
+		orderedincustDBMVi[index] = CreateMV(orderedMV, 16);
+		/* custData[index].sixBurger/threeBurger/etc. */
+		sprintf(sixBurgerMV, "sixBurgerincustDB[%d]", index);
+		sixBurgerincustDBMVi[index] = CreateMV(sixBurgerMV, 21);
+		sprintf(threeBurgerMV, "threeBurgerincustDB[%d]", index);
+		threeBurgerincustDBMVi[index] = CreateMV(threeBurgerMV, 23);
+		sprintf(vegBurgerMV, "vegBurgerincustDB[%d]", index);
+		vegBurgerincustDBMVi[index] = CreateMV(vegBurgerMV, 21);
+		sprintf(friesMV, "friesincustDB[%d]", index);
+		friesincustDBMVi[index] = CreateMV(friesMV, 17);
+		sprintf(sodaMV, "sodaincustDB[%d]", index);
+		sodaincustDBMVi[index] = CreateMV(sodaMV, 16);
+		/* custData[Index].tokenNo/tableNo */
+		sprintf(tokenNoMV, "tokenNoincustDB[%d]", index);
+		tokenNoincustDBMVi[index] = CreateMV(tokenNoMV, 19);
+		sprintf(tableNoMV, "tableNoincustDB[%d]", index);
+		tableNoincustDBMVi[index] = CreateMV(tableNoMV, 19);
+	}
+	/* tables[index] */
+	for(index = 0; index <= TABLE_COUNT; index++){ 
+		sprintf(tablesMV, "tables[%d]" index);
+		tablesMVi[index] = CreateMV(tablesMV, 9);
+	}
+
+}
+
+void Cook(){
+	
+	int myIndex = 0;
+	int whatToCook = 0;
+
+	int tempV = 0; 
+	int nextOrderTakerIndexMVi = 0;
+	int nextCustomerIndexMVi = 0;
+	int custServed = 0; 
+	int custServedMVi = 0;
+	int custLineLength = 0;
+	int custLineLengthMVi = 0;
+	int managerLineLengthMVi = 0;
+	int ordertakerstatusMVi[OT_COUNT] = 0;
+	int ordertakerstatus[OT_COUNT] = 0;
+	int tableAvailableMVi = 0;
+	int foodToBag = 0; 
+	int foodToBagMVi = 0;
+	int baggedincustDBMVi[CUST_COUNT] = 0;
+	int dineTypeincustDBMVi[CUST_COUNT] = 0;
+	int deliveredincustDBMVi[CUST_COUNT] = 0;
+	int baggedList[CUST_COUNT] = 0;
+	int baggedListMVi[CUST_COUNT] = 0;
+	int myOTMVi[CUST_COUNT] = 0;
+	int orderedincustDBMVi[CUST_COUNT] = 0;
+	int sixBurgerincustDBMVi[CUST_COUNT] ;
+	int threeBurgerincustDBMVi[CUST_COUNT] ;
+	int vegBurgerincustDBMVi[CUST_COUNT] ;
+	int friesincustDBMVi[CUST_COUNT] ;
+	int sodaincustDBMVi[CUST_COUNT] ; 
+	int tokenNoincustDBMVi[CUST_COUNT];
+	int tableNoincustDBMVi[CUST_COUNT];
+	int tablesMVi[TABLE_COUNT];
+	int readySixBurgerMVi;
+	int readyThreeBurgerMVi;
+	int readyVegBurgerMVi;
+	int readyFriesMVi;
+	int toBeCookedSixburgerMVi;
+	int toBeCookedThreeburgerMVi;
+	int toBeCookedVegburgerMVi;
+	int toBeCookedFriesMVi;	
+	int nextTokenNumberMVi;
+	int moneyAtResta urantMVi;
+	int cooksOnBreakCountMVi;
+	int workingCooksMVi[5];
+	int stopSixBurgerMVi;
+	int stopThreeBurgerMVi;
+	int stopVegBurgerMVi;
+	int stopFriesMVi;
+	int inventoryMVi;
+	
+	CreateAllMV();
+
+	/* Get the Index for this Cook before starting the job */
+	Acquire(nextCookIndexLock);
+	myIndex = GetMV(nextCookIndexMVi) ;
+	temp = GetMV(nextCookIndexMVi) + 1 ;
+	SetMV(nextCookIndexMVi, tempV);
+	Release(nextCookIndexLock);
+
+	/* To know what the manager wants this cook to cook */
+	Acquire(whatToCookFirstLock);
+	while(GetMV(whatToCookFirstMVi) == 0){
+		Release(whatToCookFirstLock);	
+		Yield();
+		Acquire(whatToCookFirstLock);
+	}
+	whatToCook = GetMV(whatToCookFirstMVi);
+	SetMV(whatToCookFirstMVi, 0)
+	Release(whatToCookFirstLock);
+	
+	/* Acquire a lock on inventory to check status*/
+	while(1){	
+		/* Check if the stop cooking flag is set by the manager*/
+		/* Acquire the current cooking item lock*/
+		/* Check if the stop cooking flag is set*/
+		/* if set then it indicates manager wants the Cook to go on break*/
+		/* Add the current cook thread to the cooks on break queue*/
+		/* Cooks goes on break (sleep)*/
+		
+		if(whatToCook == SIXBURGER){
+			Acquire(stopSixBurgerLock);
+			
+			if(GetMV(stopSixBurgerMVi) == 1){
+				Release(stopSixBurgerLock);
+				/* Increase the cooks on break Count to indicate the manager who checks this value
+					before hiring a new cook */
+				Acquire(cooksOnBreakCountLock);
+				tempV = GetMV(cooksOnBreakCountMVi) + 1;
+				SetMV(cooksOnBreakCountMVi, tempV);
+				Release(cooksOnBreakCountLock);
+				
+				Acquire(workingCookLock);
+				tempV = GetMV(workingCooksMVi[whatToCook]) - 1;
+				SetMV(workingCooksMVi[whatToCook],tempV);
+				Release(workingCookLock);
+				
+				/* OG @ */
+				Print_2Arg("Cook %d is going on break\n$", myIndex, whatToCook);
+				
+				Acquire(wakeUpCookLock);
+				Wait(wakeUpCookCV,wakeUpCookLock);
+				Release(wakeUpCookLock);
+				
+				Acquire(custServedLock);
+				if(GetMV(custServedMVi) == CUST_COUNT){
+					Release(custServedLock);
+					/* @ */
+					/* Print_1Arg("Cook %d calling E---X---I---T\n$", myIndex); */
+					Exit(0);
+				}
+				Release(custServedLock);
+				/* cook is back from break*/
+				/* Acquire the what to cook next lock and check */
+				/* what to cook next*/
+				Acquire(whatToCookNextLock);
+				/* update what the cook was cooking before going to */
+				/* sleep with what he has to cook after the break*/
+				while(GetMV(whatToCookNextMVi) == 0){
+					Release(whatToCookNextLock);
+					Yield();
+					Acquire(whatToCookNextLock);
+				}	
+				whatToCook = GetMV(whatToCookNextMVi);
+				SetMV(whatToCookNextMVi, 0);
+				/* release the lock after setting the value*/
+				Release(whatToCookNextLock);
+				
+				/* OG */
+				Print_2Arg("Cook %d returned from break\n$", myIndex, whatToCook);	
+			}else{	
+				Release(stopSixBurgerLock);
+			}	
+		}
+		else if(whatToCook == THREEBURGER){
+			Acquire(stopThreeBurgerLock);
+			if(GetMV(stopThreeBurgerMVi) == 1){
+				Release(stopThreeBurgerLock);
+				/* Increase the cooks on break Count to indicate the manager who checks this value
+					before hiring a new cook */
+				Acquire(cooksOnBreakCountLock);
+				tempV = GetMV(cooksOnBreakCountMVi) + 1;
+				SetMV(cooksOnBreakCountMVi, tempV);
+				Release(cooksOnBreakCountLock);
+				
+				Acquire(workingCookLock);
+				tempV = GetMV(workingCooksMVi[whatToCook]) - 1;
+				SetMV(workingCooksMVi[whatToCook],tempV);
+				Release(workingCookLock);
+				
+				/* OG */
+				Print_2Arg("Cook %d is going on break\n$", myIndex, whatToCook);
+				
+				Acquire(wakeUpCookLock);
+				Wait(wakeUpCookCV, wakeUpCookLock);
+				Release(wakeUpCookLock);
+				
+				Acquire(custServedLock);
+				if(GetMV(custServedMVi) == CUST_COUNT){
+					Release(custServedLock);
+					/* @ */
+					/* Print_1Arg("Cook %d calling E---X---I---T\n$", myIndex); */
+					Exit(0);
+				}
+				Release(custServedLock);
+				/* cook is back from break*/
+				/* Acquire the what to cook next lock and check */
+				/* what to cook next*/
+				Acquire(whatToCookNextLock);
+				/* update what the cook was cooking before going to */
+				/* sleep with what he has to cook after the break*/
+				while(GetMV(whatToCookNextMVi) == 0){
+					Release(whatToCookNextLock);
+					Yield();
+					Acquire(whatToCookNextLock);
+				}	
+				whatToCook = GetMV(whatToCookNextMVi);
+				SetMV(GetMV(whatToCookNextMVi),0);
+				/* release the lock after setting the value*/
+				Release(whatToCookNextLock);
+				
+				/* OG*/
+				Print_2Arg("Cook %d returned from break\n$", myIndex, whatToCook);
+				
+			}else{	
+				Release(stopThreeBurgerLock);
+			}	
+		}
+		else if(whatToCook == VEGBURGER){
+		
+			Acquire(stopVegBurgerLock);
+			if(GetMV(stopVegBurgerMVi) == 1){
+			
+				Release(stopVegBurgerLock);
+				/* Increase the cooks on break Count to indicate the manager who checks this value
+					before hiring a new cook */
+				Acquire(cooksOnBreakCountLock);
+				tempV = GetMV(cooksOnBreakCountMVi) + 1;
+				SetMV(cooksOnBreakCountMVi, tempV);
+				Release(cooksOnBreakCountLock);
+				
+				Acquire(workingCookLock);
+				tempV = GetMV(workingCooksMVi[whatToCook]) - 1;
+				SetMV(workingCooksMVi[whatToCook],tempV);
+				Release(workingCookLock);
+				
+				/* OG*/
+				Print_2Arg("Cook %d is going on break\n$", myIndex, whatToCook);
+				Acquire(wakeUpCookLock);
+				
+				Wait(wakeUpCookCV,wakeUpCookLock);
+				Release(wakeUpCookLock);
+				
+				Acquire(custServedLock);
+				if(GetMV(custServedMVi) == CUST_COUNT){
+					Release(custServedLock);
+					/* @ */
+					/* Print_1Arg("Cook %d calling E---X---I---T\n$", myIndex); */
+					Exit(0);
+				}
+				Release(custServedLock);
+				/* cook is back from break*/
+				/* Acquire the what to cook next lock and check */
+				/* what to cook next*/
+				Acquire(whatToCookNextLock);
+				/* update what the cook was cooking before going to */
+				/* sleep with what he has to cook after the break*/
+				while(GetMV(whatToCookNextMVi) == 0){
+					Release(whatToCookNextLock);
+					Yield();
+					Acquire(whatToCookNextLock);
+				}	
+				whatToCook = GetMV(whatToCookNextMVi);
+				SetMV(GetMV(whatToCookNextMVi),0);
+				/* release the lock after setting the value*/
+				Release(whatToCookNextLock);
+				
+				/* OG*/
+				Print_2Arg("Cook %d returned from break\n$", myIndex, whatToCook);
+				
+			}else{
+				Release(stopVegBurgerLock);
+			}	
+		}
+		else if(whatToCook == FRIES){
+			Acquire(stopFriesLock);
+			
+			if(GetMV(stopFriesMVi) == 1){
+				Release(stopFriesLock);
+				
+				/* Increase the cooks on break Count to indicate the manager who checks this value
+					before hiring a new cook */
+					
+				Acquire(cooksOnBreakCountLock);
+				tempV = GetMV(cooksOnBreakCountMVi) + 1;
+				SetMV(cooksOnBreakCountMVi, tempV);
+				Release(cooksOnBreakCountLock);
+				
+				Acquire(workingCookLock);
+				tempV = GetMV(workingCooksMVi[whatToCook]) - 1;
+				SetMV(workingCooksMVi[whatToCook],tempV);
+				Release(workingCookLock);
+				
+				/* OG*/
+				Print_2Arg("Cook %d is going on break\n$", myIndex, whatToCook);
+				Acquire(wakeUpCookLock);
+				Wait(wakeUpCookCV, wakeUpCookLock);
+				Release(wakeUpCookLock);
+				Acquire(custServedLock);
+				if(custServed == CUST_COUNT){
+					Release(custServedLock);
+					/* @ */
+					/* Print_1Arg("Cook %d calling E---X---I---T\n$", myIndex); */
+					Exit(0);
+				}
+				Release(custServedLock);
+				
+				/* cook is back from break*/
+				/* Acquire the what to cook next lock and check */
+				/* what to cook next*/
+				Acquire(whatToCookNextLock);
+				/* update what the cook was cooking before going to */
+				/* sleep with what he has to cook after the break*/
+				while(GetMV(whatToCookNextMVi) == 0){
+					Release(whatToCookNextLock);
+					Yield();
+					Acquire(whatToCookNextLock);
+				}	
+				whatToCook = whatToCookNext;
+				whatToCook = GetMV(whatToCookNextMVi);
+				SetMV(GetMV(whatToCookNextMVi),0);
+				/* release the lock after setting the value*/
+				Release(whatToCookNextLock);
+				
+				/* OG*/
+				Print_2Arg("Cook %d returned from break\n$", myIndex, whatToCook);
+				
+			}else{
+				Release(stopFriesLock);
+			}	
+		} 
+		
+		/* If all the customers are serviced then the cooks will Go Home*/
+		/* Check if all the Customers are serviced*/
+		Acquire(custServedLock);
+		if(GetMV(whatToCookNextMVi) == CUST_COUNT){
+			Release(custServedLock);
+			/* @ */
+			/* Print_1Arg("Cook %d calling E---X---I---T\n$", myIndex); */
+			Exit(0);
+		}
+		Release(custServedLock);
+
+		Acquire(inventoryLock);
+		while(GetMV(inventoryMVi) == 0){
+			Release(inventoryLock);
+			Yield();
+			Acquire(inventoryLock);
+		}	
+		tempV = GetMV(inventoryMVi) -1;
+		SetMV(inventoryMVi, tempV);
+		Release(inventoryLock);
+
+		/* check what Manager has ordered the cook to prepare.*/
+		/* Increase the food count in Ready DataBase*/
+		if(whatToCook == SIXBURGER){
+			/* OG*/
+			Print_1Arg("Cook %d is going to cook 6-dollar burger\n$", myIndex);
+			Acquire(foodReadyDBLock);
+			tempV = GetMV(readySixBurgerMVi) + 1;
+			SetMV(readySixBurgerMVi, tempV);
+			Release(foodReadyDBLock);
+		}
+		
+		if(whatToCook == THREEBURGER){		
+			/* OG*/
+			Print_1Arg("Cook %d is going to cook 3-dollar burger\n$", myIndex);
+			Acquire(foodReadyDBLock);
+			tempV = GetMV(readyThreeBurgerMVi)+ 1;
+			SetMV(readyThreeBurgerMVi, tempV);
+			Release(foodReadyDBLock);
+		}
+		if(whatToCook == VEGBURGER){
+			/* OG*/
+			Print_1Arg("Cook %d is going to cook veggie burger\n$", myIndex);	 
+			Acquire(foodReadyDBLock);
+			tempV = GetMV(readyVegBurgerMVi)+ 1;
+			SetMV(readyVegBurgerMVi, tempV);
+			Release(foodReadyDBLock);
+		}
+		
+		if(whatToCook == FRIES){
+			/* OG*/
+			Print_1Arg("Cook %d is going to cook french fries\n$", myIndex);	
+			Acquire(foodReadyDBLock);
+			tempV = GetMV(readyFriesMVi)+ 1;
+			SetMV(readyFriesMVi, tempV);
+			Release(foodReadyDBLock);
+		}	
+		
+		/* cooks takes some Time to prepare the food that */
+		/* is instructed by the manager */
+		Yield(); 
+	}
+} 
+		
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

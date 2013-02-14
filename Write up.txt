@@ -1,0 +1,216 @@
+Title: Writeup for Project 4, Fall 2010
+Date : 11/20/2010
+Group Number: 58
+
+Name				   				Email					Student Id 
+Naveen Bangalore NanjundaPrasad	   			nbangalo@usc.edu				5752-7730-16
+Vishak Nag Ashoka		  			ashoka@usc.edu      				9791-1175-66
+Jida Wen			   			jidawen@usc.edu     				6412-1395-84 
+
+------------------
+I. Requirements:
+------------------
+
+
+	-----------
+	  Part 1
+	-----------  
+	
+	+ Implement a fully distributed system for Carl's Jr. simulation
+	
+		In this project we need to transfer our Cral's Jr. simulation into a fully distributed system and We don't need to
+		worry the memory problem. Because it is a fully distributed system, there should not be any central server in the system. 
+		Instead we will have a networking thread for each user program which represent one entity like a custom in Carl's Jr. 
+		In order to make the whole system work for multiple nachos instance while there is no central sever inside,	the synchronization
+		of the networking thread is key part for this distributed system. We need to achieve the total ordering of event among the 
+		networking threads. This would allow each networking thread working as a server	and deal with its own data structure without
+		conflict with other thread. And the user program just need to behave depend on its own networking thread. Finally all user 
+		program should complete their code without error.
+		
+	--------------------
+	  Extra credit part
+	--------------------		
+		
+	+ Make the fully distributed system having the ability to handle lost packets
+
+		
+		
+------------------
+II. Assumption:
+------------------
+
+------------------
+III. Design:
+------------------
+
+	------------------------------------------------
+	  Design of how the distributed system works
+	------------------------------------------------
+
+		In this step, we just make clear how our distributed system works. In this fully distributed system, each userprogram thread has its own
+		networking thread and the networking thread next to it. The networking thread acts like a server for the userprogram thread. It was created 
+		when we use the Exec() systemcall. When we create the process with a userprogram thread, we also add a networking thread next to it, means
+		the mailbox number is just 1 bigger than the userprogram thread. The userprogram thread can only send message to its own networking thread.
+		And it's the networking threads' duty to communicate with each other and make the right decision. Of course the networking thread is only 
+		responsible for its own userprogram too. The critical part for the system is the communication among those networking threads. They need to 
+		work independent for their own data and synchronized with each other when working together.
+		
+
+	----------------------------------------------------------
+	  Design for the entities in the fully distributed system
+	----------------------------------------------------------
+
+	+ Userprogram thread Design
+			
+		The project 4 userprogram is very similar like what in the project 3 part 3. Actually the whole networking is transparent to the userprogram,
+		the userprogram shouldn't know anything about how the system works. It just need to  perform kernel opertion through the system call. That will 
+		got transferred in exception.cc and access the according kernel system call which is like what we did in project 3 part 3. Then the procedure is
+		little different for the userprogram thread, it will send message to its own networking thread instead to the central server to tell what it needs
+		to do. As the userprogram and networking thread are in the same nachos instance, so there is no RPC call functions. All the function it performs
+		should be done inside the networking thread not in the seperate RPC function.
+
+	+ Registration server Design
+
+		In order to communicate with other networking threads, we need to know the machine ID and the mailbox number of all the networking threads. So we 
+		need a registration sever to do that. Although in fully distributed system there is no central server, we still need a thread acts like a server
+		to tell all the networking threads the information for the other ones. Every time a networking thread created, it needs to send its information 
+		to this server, like its machine ID and the mailbox number. The machine ID and mailbox number for this server is already knowed by all the networking
+		threads. And the server already known how many networking threads will be in this simulation. So after all the networking threads send their information
+		to the server, it construct one or several messages and send all these message to all the networking threads, so all the networking threads can 
+		build up a group table which stores all the information for the networking threads in the system and use this table to communicate with them. Actually
+		after the simulation started the server instance job is finished and we can close it.
+
+	+ Networking thread Design
+
+		Networking threads is the most important part for this fully distributed system. By communication with each other and reply to their own userprogram
+		thread they perform the essential part of the distributed system. Each networking thread has its own data base for locks, conditionvariables, or
+		monitor variables. Every networking thread will update their data base seperately but their action are always same. So we can achieve total ordering 
+		of event and solve the race condition even without a central server.
+
+		When simulation starts the first thing a networking thread needs to do is get registed in the registration sever. After it receive the reply message 
+		from the sever shows everyone is ready  it can update the group table which contains the information of other threads. Then there is 5 second delay 
+		to make sure the other networking threads group table also get updated. Then the networking thread will fall in a while loop means always waiting for 
+		message from other entities in the system. In general there are two situations for the networking thread receive message from others: one is this 
+		message is from its own userprogram, another is this message is from system networking threads including itself. If this message is from its own 
+		userprogram it just append a timestamp to this message and send it to all networking threads including itself. If this message is from the networking 
+		threads in the system it needs to perform the total ordering of event and perform the accordingly tasks.
+
+		The total ording of event can done by several steps. After receive the message, it will check whether this received message is a action message or
+		update message. If it is a update type message we will extract the timestamp information and use that information to update its group table entry 
+		for the relavent group member. If its a action type message we should extract what action which it needs to perform and put it into the message Queue.
+		This queue stores the action that has not yet been processed. Then we get a new timestamp and construct a update message and send to every networking
+		threads including myself. After doing all these there is a common step for these two types that is remove the action in the tobeprocessed message 
+		Queue and make a compare. If the timeStamp of this removed action message is less the the least timeStamp value for all the entries in group table, 
+		we can start processing this action. Otherwise we have to put this action back to the message Queue and wait for the group table update next time.
+		  
+		when we  process the actual action the userprogram thread needed, the way is quite similar to what the RPC calls in project 3 part 3. Just we need to 
+		extract the action type from the message we got and perform the different tasks according to the different action type. And all these tasks are in the 
+		networking function not in seperate RPC calls and reply the userprogram or not in the different case. Then after doing all these steps the networking 
+		thread fall in the while loop again and start waiting for the other messages.
+
+	
+	--------------------------------------------------------------------
+	  Design for transform Carl's Jr Entities to the ditributed system
+	--------------------------------------------------------------------
+
+		
+		
+	
+
+---------------------
+VI. Implementation:
+---------------------
+
+	+ Files modified	  
+	  
+	-- Exception.cc
+	-- testfiles.c
+	-- halt.c
+
+	+ Data Structures added, and the file they were added to. 
+  
+	-- Add in file exception.cc
+	
+		struct groupEntry
+		{
+			int machineId;
+			int mailBox;
+			long int timeStamp;
+		};
+
+		struct eventOrderEntry
+		{
+			char replymessage[100];
+			PacketHeader replyOutPktHdr;
+			MailHeader replyOutMailHdr;
+			long int timeStamp;
+		};
+
+
+
+
+	+ Functions added and in which file. 
+
+	--added in file exception.cc
+	
+		void NetworkingThread() {
+		
+		}
+
+		void StartSimulation_Syscall() {
+		
+		}
+
+
+	+ Functions modified and in which file. 
+
+	--modified in exception.cc 
+	
+		int CreateLock_Syscall(unsigned int vaddr, int len, int uniqueId) {
+
+		}
+		
+		int Acquire_Syscall(unsigned int lockIndex) {
+
+		}
+		
+		int Release_Syscall(unsigned int lockIndex) {
+
+		}
+		
+		int DestroyLock_Syscall(unsigned int lockIndex) {
+
+		}
+		
+		int CreateCV_Syscall(unsigned int vaddr, int len, int uniqueId) {
+
+		}
+		
+		int Wait_Syscall(unsigned int CVIndex, unsigned int lockIndex) {
+
+		}
+		
+		int Signal_Syscall(unsigned int CVIndex, unsigned int lockIndex) {
+
+		}
+		
+		int Broadcast_Syscall(unsigned int CVIndex, unsigned int lockIndex) {
+
+		}
+		
+		int DestroyCV_Syscall(unsigned int CVIndex) {
+
+		}
+
+	--modified in halt.c and testfiles.c
+
+		int main() {
+		
+		}
+
+
+
+
+
+
+	
